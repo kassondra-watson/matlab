@@ -1,0 +1,87 @@
+clear all
+close all
+clc
+[X,Y]=meshgrid(linspace(-4,4,40),linspace(-4,4,40)); %X and Y are now matrices...
+Z=peaks(X,Y);
+figure(1)
+surf(X,Y,Z);
+xlabel('x');ylabel('y');title('surf - default')
+figure(2)
+surf(X,Y,Z);
+shading flat
+xlabel('x');ylabel('y');title('surf - flat')
+figure(3)
+surf(X,Y,Z); 
+shading interp  %here we get a nice smooth transition.
+xlabel('x');ylabel('y');title('surf - interp')
+figure(4)
+surfc(X,Y,Z); 
+shading interp
+xlabel('x');ylabel('y');title('surfc')
+figure(5)
+surf(X,Y,Z);shading interp; hold on
+shadowplot x
+shadowplot y
+clear all
+close all
+[X,Y]=meshgrid(linspace(-4,4,100),linspace(-4,4,100));
+Z=peaks(X,Y);
+figure(1)
+contour(X,Y,Z);
+colorbar;
+title('standard contour');
+figure(2)
+contourf(X,Y,Z);title('standard contour')
+figure(3)
+contourf(X,Y,Z,[-8:1:8]);title('contourf at specified levels');
+colorbar
+figure(4)
+[c,h]=contour(X,Y,Z,[-8 -2 0 2 8],'k');title('labeled') %labels 
+clabel(c,h)
+clear all
+close all
+load seamount %this is just x, y, z (depth) triplets of data.
+tri=delaunay(x,y); %this performs the triangulation process.
+tri(1:5,:)
+
+%first, let's make a scatter plot showing location of the data.
+
+figure(1)
+scatter(x,y,20,z,'filled'); colorbar;
+
+%We can easily add contours. NOTE. for scattered data, you need to get the
+%tricontour mfile from the online file exchange
+
+hold on
+contours=[-4000 -3000 -2000 -1000];
+[c,h]=tricontour(tri,x,y,z,contours);
+clabel(c);
+
+figure(2)
+FV=isosurface(x,y,z,v,.2);
+p=patch(FV);
+isonormals(x,y,z,v,p);
+p.FaceColor='red';
+p.EdgeColor = 'none';
+
+view(3)
+camlight; lighting phong
+hold on
+FV2=isosurface(x,y,z,v,-.2);
+p2=patch(FV2);
+isonormals(x,y,z,v,p2);
+p2.FaceColor='blue';
+p2.EdgeColor = 'none';
+axis([-2 2 -2 2 -2 2])
+grid on
+clc
+clear
+clear all
+x = 1:20;
+y = rand(1,20);
+sz = rand(1,20);
+bubblechart(x,y,sz);
+c = 1:20;
+bubblechart(x,y,sz,c) 
+scatter(x,y,50,c, "filled"); box on  
+
